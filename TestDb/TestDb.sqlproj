@@ -27,4 +27,5 @@
   <ItemGroup>
     <Build Include="**/*.sql" />
   </ItemGroup>
+  <Target Name="PackageRestore" DependsOnTargets="Restore" BeforeTargets="BeforeResolveReferences" Condition="'$(MSBuildRuntimeType)' != 'Core'" />
 </Project>
