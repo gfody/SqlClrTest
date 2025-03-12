@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
+    <TargetExt>.dacpac</TargetExt>
+    <DacpacAssemblyName>TestDb</DacpacAssemblyName>
+  </PropertyGroup>
+
+  <Import Project="Hackpac.targets" />
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net48" Version="1.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+
+</Project>

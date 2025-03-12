@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build">
+  <Sdk Name="Microsoft.Build.Sql" Version="1.0.0" />
+  <PropertyGroup>
+    <Name>TestDb</Name>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql160DatabaseSchemaProvider</DSP>
+    <TargetFramework>net48</TargetFramework>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkMoniker>.NETFramework,Version=$(TargetFrameworkVersion)</TargetFrameworkMoniker>
+    <ModelCollation>1033, CI</ModelCollation>
+    <RootNamespace>TestDb</RootNamespace>
+    <AssemblyName>TestDb</AssemblyName>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+    <ProjectGuid>{24149967-ae2a-404e-ba56-61b556ad890e}</ProjectGuid>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TestClr\TestClr.csproj">
+      <Name>TestClr</Name>
+      <Project>{5edc0e6b-8ea1-4095-861f-fa5a9a282fad}</Project>
+      <Private>True</Private>
+      <IsModelAware>True</IsModelAware>
+      <GenerateSqlClrDdl>True</GenerateSqlClrDdl>
+      <ReferenceOutputAssembly>False</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

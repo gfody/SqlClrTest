@@ -1,0 +1,73 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Target Name="Hackpac" AfterTargets="Build">
+    <Hackpac AssemblyName="$(DacpacAssemblyName)" OutputFile="$(OutputPath)$(AssemblyName)$(TargetExt)" />
+  </Target>
+  <UsingTask TaskName="Hackpac" TaskFactory="RoslynCodeTaskFactory" AssemblyName="Microsoft.Build.Tasks.Core">
+    <ParameterGroup>
+      <OutputFile ParameterType="System.String" Required="true" />
+      <AssemblyName ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System" />
+      <Using Namespace="System.IO" />
+      <Using Namespace="System.IO.Compression" />
+      <Using Namespace="System.Security.Cryptography" />
+      <Code Type="Fragment" Language="cs">
+		<![CDATA[
+		var hex = string.Join("", File.ReadAllBytes(OutputFile).Select(c => c.ToString("X2")));
+		var model = Encoding.UTF8.GetBytes($"""
+		<?xml version="1.0" encoding="utf-8"?>
+		<DataSchemaModel FileFormatVersion="1.2" SchemaVersion="3.3" DspName="Microsoft.Data.Tools.Schema.Sql.Sql160DatabaseSchemaProvider" CollationLcid="1033" CollationCaseSensitive="False" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+		<Model>
+		<Element Type="SqlAssembly" Name="[{AssemblyName}]">
+		<Property Name="PermissionSet" Value="3" />
+		<Relationship Name="AssemblySources"><Entry><Element Type="SqlAssemblySource"><Property Name="Source"><Value><![CDATA[0x{hex}]]]]><![CDATA[></Value></Property></Element></Entry></Relationship>
+		<Relationship Name="Authorizer"><Entry><References ExternalSource="BuiltIns" Name="[dbo]" /></Entry></Relationship>
+		</Element>
+		</Model>
+		</DataSchemaModel>
+		""");
+		var hash = string.Join("", SHA256.Create().ComputeHash(model, 0, model.Length).Select(c => c.ToString("X2")));
+		using var z = new ZipArchive(new FileStream(OutputFile, FileMode.Create, FileAccess.Write), ZipArchiveMode.Create, false);
+		void addentry(string filename, byte[] content)
+		{
+			using var ze = z.CreateEntry(filename).Open();
+			ze.Write(content, 0, content.Length);
+		}
+		addentry("[Content_Types].xml", Encoding.UTF8.GetBytes("""
+			<?xml version="1.0" encoding="utf-8"?>
+			<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+			<Default Extension="xml" ContentType="text/xml" />
+			</Types>
+			"""));
+		addentry("model.xml", model);
+		addentry("Origin.xml", Encoding.UTF8.GetBytes($"""
+		<?xml version="1.0" encoding="utf-8"?>
+		<DacOrigin xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+		  <PackageProperties>
+		    <Version>3.0.0.0</Version>
+		    <ContainsExportedData>false</ContainsExportedData>
+		    <StreamVersions>
+		      <Version StreamName="Data">2.0.0.0</Version>
+		      <Version StreamName="DeploymentContributors">1.0.0.0</Version>
+		    </StreamVersions>
+		  </PackageProperties>
+		  <Operation>
+		    <Identity>{Guid.NewGuid()}</Identity>
+		    <Start>{DateTime.UtcNow:u}</Start>
+		    <End>{DateTime.UtcNow:u}</End>
+		    <ProductName />
+		    <ProductVersion>0.0</ProductVersion>
+		    <ProductSchema>http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02</ProductSchema>
+		  </Operation>
+		  <Checksums>
+		    <Checksum Uri="/model.xml">{hash}</Checksum>
+		  </Checksums>
+		  <ModelSchemaVersion>3.3</ModelSchemaVersion>
+		</DacOrigin>
+		"""));
+		]]>
+      </Code>
+    </Task>
+  </UsingTask>
+</Project>
