@@ -17,7 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\TestClr\TestClr.csproj">
       <Name>TestClr</Name>
-      <Project>{5edc0e6b-8ea1-4095-861f-fa5a9a282fad}</Project>
+      <!--<Project>{5edc0e6b-8ea1-4095-861f-fa5a9a282fad}</Project>-->
       <Private>True</Private>
       <IsModelAware>True</IsModelAware>
       <GenerateSqlClrDdl>True</GenerateSqlClrDdl>
