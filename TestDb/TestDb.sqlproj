@@ -11,6 +11,7 @@
     <RootNamespace>TestDb</RootNamespace>
     <AssemblyName>TestDb</AssemblyName>
     <TargetDatabaseSet>True</TargetDatabaseSet>
+    <EnableDefaultSqlItems>False</EnableDefaultSqlItems>
     <ProjectGuid>{24149967-ae2a-404e-ba56-61b556ad890e}</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
@@ -22,5 +23,8 @@
       <GenerateSqlClrDdl>True</GenerateSqlClrDdl>
       <ReferenceOutputAssembly>False</ReferenceOutputAssembly>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="**/*.sql" />
   </ItemGroup>
 </Project>

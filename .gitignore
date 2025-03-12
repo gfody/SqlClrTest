@@ -1,0 +1,9 @@
+*
+!**.cs
+!**.csproj
+!**.sln
+!**.sql
+!**.sqlproj
+!**.targets
+!**.yml
+!.gitignore
