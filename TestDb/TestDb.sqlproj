@@ -1,13 +1,12 @@
-﻿<Project Sdk="Microsoft.Build.Sql/1.0.0">
+﻿<Project Sdk="Microsoft.Build.Sql/2.0.0-preview.1">
   <PropertyGroup>
     <Name>TestDb</Name>
     <DSP>Microsoft.Data.Tools.Schema.Sql.Sql160DatabaseSchemaProvider</DSP>
-    <TargetFramework>net48</TargetFramework>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFramework>net481</TargetFramework>
+    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <TargetFrameworkMoniker>.NETFramework,Version=$(TargetFrameworkVersion)</TargetFrameworkMoniker>
     <ModelCollation>1033, CI</ModelCollation>
     <RootNamespace>TestDb</RootNamespace>
-    <AssemblyName>TestDb</AssemblyName>
     <TargetDatabaseSet>True</TargetDatabaseSet>
     <EnableDefaultSqlItems>False</EnableDefaultSqlItems>
     <ProjectGuid>{24149967-ae2a-404e-ba56-61b556ad890e}</ProjectGuid>
@@ -19,11 +18,9 @@
       <Private>True</Private>
       <IsModelAware>True</IsModelAware>
       <GenerateSqlClrDdl>True</GenerateSqlClrDdl>
-      <ReferenceOutputAssembly>False</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Build Include="**/*.sql" />
   </ItemGroup>
-  <Target Name="PackageRestore" DependsOnTargets="Restore" BeforeTargets="BeforeResolveReferences" Condition="'$(MSBuildRuntimeType)' != 'Core'" />
 </Project>
