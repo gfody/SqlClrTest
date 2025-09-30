@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.Build.Sql/2.0.0-preview.1">
+﻿<Project Sdk="Microsoft.Build.Sql/2.0.0-preview.5">
   <PropertyGroup>
     <Name>TestDb</Name>
     <DSP>Microsoft.Data.Tools.Schema.Sql.Sql160DatabaseSchemaProvider</DSP>
